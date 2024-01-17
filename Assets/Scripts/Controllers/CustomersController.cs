@@ -39,6 +39,7 @@ namespace CookingPrototype.Controllers {
 		}
 
 		void Awake() {
+			Init();
 			if ( Instance != null ) {
 				Debug.LogError("Another instance of CustomersController already exists!");
 			}
@@ -49,10 +50,6 @@ namespace CookingPrototype.Controllers {
 			if ( Instance == this ) {
 				Instance = null;
 			}
-		}
-
-		void Start() {
-			Init();
 		}
 
 		void Update() {

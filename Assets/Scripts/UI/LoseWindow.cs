@@ -26,6 +26,7 @@ namespace CookingPrototype.UI {
 		public void Show() {
 			if ( !_isInit ) {
 				Init();
+				_isInit = true;
 			}
 
 			var gc = GameplayController.Instance;
