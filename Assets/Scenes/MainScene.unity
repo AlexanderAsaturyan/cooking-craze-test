@@ -8929,7 +8929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee12155f0c374c4b84b6d438ad0cc80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CustomersTargetNumber: 15
+  CustomersTargetNumber: 18
   CustomerWaitTime: 15
   CustomerSpawnTime: 3
   CustomerPlaces:
