@@ -10,6 +10,7 @@ namespace CookingPrototype.Kitchen {
 
 		FoodPlace _place = null;
 		float     _timer = 0f;
+		private float _lastTimeClick;
 
 		void Start() {
 			_place = GetComponent<FoodPlace>();
@@ -28,12 +29,12 @@ namespace CookingPrototype.Kitchen {
 			}
 		}
 
-		public void OnPointerClick(PointerEventData eventData)
-		{
-			if ( eventData.clickCount == 2 )
-			{
+		public void OnPointerClick(PointerEventData eventData) {
+			float currentTimeClick = eventData.clickTime;
+			if ( Mathf.Abs(currentTimeClick - _lastTimeClick) < 0.4f ) {
 				_onDoubleClicked?.Invoke();
 			}
+			_lastTimeClick = currentTimeClick;
 		}
 	}
 }
