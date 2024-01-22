@@ -1,5 +1,4 @@
 using UnityEngine;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +12,10 @@ namespace CookingPrototype.Controllers {
 
 		public static CustomersController Instance { get; private set; }
 
-		public int                 CustomersTargetNumber = 15;
-		public float               CustomerWaitTime      = 18f;
-		public float               CustomerSpawnTime     = 3f;
-		public List<CustomerPlace> CustomerPlaces        = null;
+		public int CustomersTargetNumber = 15;
+		public float CustomerWaitTime = 18f;
+		public float CustomerSpawnTime = 3f;
+		public List<CustomerPlace> CustomerPlaces = null;
 
 		[HideInInspector]
 		public int TotalCustomersGenerated { get; private set; } = 0;
@@ -81,7 +80,7 @@ namespace CookingPrototype.Controllers {
 
 		Customer GenerateCustomer() {
 			var customerGo = Instantiate(Resources.Load<GameObject>(CUSTOMER_PREFABS_PATH));
-			var customer   = customerGo.GetComponent<Customer>();
+			var customer = customerGo.GetComponent<Customer>();
 
 			var orders = _orderSets.Pop();
 			customer.Init(orders);
@@ -111,7 +110,7 @@ namespace CookingPrototype.Controllers {
 
 			TotalCustomersGenerated = 0;
 			TotalCustomersGeneratedChanged?.Invoke();
-			 
+
 			GameplayController.Instance.OrdersTarget = totalOrders - 2;
 		}
 
@@ -135,8 +134,23 @@ namespace CookingPrototype.Controllers {
 		/// </summary>
 		/// <param name="order">Заказ, который пытаемся отдать</param>
 		/// <returns>Флаг - результат, удалось ли успешно отдать заказ</returns>
-		public bool ServeOrder(Order order) {
-			throw  new NotImplementedException("ServeOrder: this feature is not implemented.");
+		public bool ServeOrder(Order order)
+		{
+			List<Customer> customers = CustomerPlaces.Where(place => place.CurCustomer != null)
+				.Select(place => place.CurCustomer).OrderBy(customer => customer.WaitTime).ToList();
+
+			foreach ( Customer customer in customers )
+			{
+				if ( customer.ServeOrder(order) )
+				{
+					if ( customer.IsComplete)
+					{
+						FreeCustomer(customer);
+					}
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }
